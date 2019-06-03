@@ -121,4 +121,5 @@ void esegui(char *str) {
     int len = 0;
     int *arr = load(&(*str), &len);
     exe(arr, len);
+    free(arr);
 }

@@ -3,7 +3,9 @@
 void display(int reg);
 void print_stack(int num);
 void push(int reg);
+void pushInternal(int num);
 void pop(int reg);
+int popInternal();
 void mov(int reg, int num);
 void call(int pos);
 void ret();

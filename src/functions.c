@@ -179,6 +179,8 @@ void exe(int *arr, int len) {
     do {
         switch(arr[ip]) {
             case 0:
+                free(s);
+                ip = 0;
                 return;
             case 1:
                 display(arr[ip+1]);
@@ -229,5 +231,4 @@ void exe(int *arr, int len) {
                 break;
         }
     }while((int)ip < len);
-    free(s);
 }
