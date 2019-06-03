@@ -103,3 +103,18 @@ table match(table *t, int num) {
     }
     return NULL;
 }
+
+void overflow() {
+    printf("Overflow\n");
+    exit(1);
+}
+
+void stackUnderflow() {
+    printf("Stack underflow\n");
+    exit(1);
+}
+
+void stackOverflow() {
+    printf("Stack overflow\n");
+    exit(1);
+}

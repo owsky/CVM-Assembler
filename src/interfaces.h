@@ -15,3 +15,6 @@ void loadTable(table *t);
 table match(table *t, int num);
 int isReg(table *t);
 void destroy(table *t);
+void overflow();
+void stackOverflow();
+void stackUnderflow();
