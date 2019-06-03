@@ -101,7 +101,7 @@ void jneg(int pos, stack s, unsigned int *ip) {
 
 /*Addizione intera P1 + P2. Il risultato viene inserito nello stack.
  Se non c'è overflow, la funzione restituisce 0, altrimenti restituisce -1*/
-void add(int reg1, int reg2, int *regs, stack s, unsigned int *ip) {
+int add(int reg1, int reg2, int *regs, stack s, unsigned int *ip) {
     s->arr[s->sp] = regs[reg1] + regs[reg2];
     s->sp++;
     *ip+=3;
@@ -115,7 +115,7 @@ void add(int reg1, int reg2, int *regs, stack s, unsigned int *ip) {
 /*Sottrazione intera P1 - P2. Il risultato viene inserito nello stack.
 Terminazione i Se non c'è overflow, la funzione restituisce 0, altrimenti restituisce -1
 n caso di overflow*/
-void sub(int reg1, int reg2, int *regs, stack s, unsigned int *ip) {
+int sub(int reg1, int reg2, int *regs, stack s, unsigned int *ip) {
     s->arr[s->sp] = regs[reg1] - regs[reg2];
     s->sp++;
     *ip+=3;
@@ -128,7 +128,7 @@ void sub(int reg1, int reg2, int *regs, stack s, unsigned int *ip) {
 
 /*Moltiplicazione intera P1 * P2. Il risultato viene inserito nello stack.
  Se non c'è overflow, la funzione restituisce 0, altrimenti restituisce -1*/
-void mul(int reg1, int reg2, int *regs, stack s, unsigned int *ip) {
+int mul(int reg1, int reg2, int *regs, stack s, unsigned int *ip) {
     s->arr[s->sp] = regs[reg1] * regs[reg2];
     s->sp++;
     *ip+=3;
@@ -141,7 +141,7 @@ void mul(int reg1, int reg2, int *regs, stack s, unsigned int *ip) {
 
 /*Divisione intera P1 / P2. Il risultato viene inserito nello stack.
 Terminazione con errore in caso di divisione per zero*/
-void divi(int reg1, int reg2, int *regs, stack s, unsigned int *ip) {
+int divi(int reg1, int reg2, int *regs, stack s, unsigned int *ip) {
     if(regs[reg2]==0)
         return -1;
     else {
