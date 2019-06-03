@@ -100,33 +100,53 @@ void jneg(int pos, stack s, unsigned int *ip) {
 }
 
 /*Addizione intera P1 + P2. Il risultato viene inserito nello stack.
-Terminazione in caso di overflow*/
+ Se non c'è overflow, la funzione restituisce 0, altrimenti restituisce -1*/
 void add(int reg1, int reg2, int *regs, stack s, unsigned int *ip) {
     s->arr[s->sp] = regs[reg1] + regs[reg2];
     s->sp++;
     *ip+=3;
+    if(regs[reg1]>0 && regs[reg2]>0 && s->arr[s->sp] < 0)
+        return -1; 
+    if(regs[reg1]<0 && regs[reg2]<0 && s->arr[s->sp] > 0)
+        return -1;
+    return 0; 
 }
 
 /*Sottrazione intera P1 - P2. Il risultato viene inserito nello stack.
-Terminazione in caso di overflow*/
+Terminazione i Se non c'è overflow, la funzione restituisce 0, altrimenti restituisce -1*/
+n caso di overflow*/
 void sub(int reg1, int reg2, int *regs, stack s, unsigned int *ip) {
     s->arr[s->sp] = regs[reg1] - regs[reg2];
     s->sp++;
     *ip+=3;
+    if(regs[reg1]>0 && regs[reg2]>0 && s->arr[s->sp] < 0)
+        return -1; 
+    if(regs[reg1]<0 && regs[reg2]<0 && s->arr[s->sp] > 0)
+        return -1;
+    return 0; 
 }
 
 /*Moltiplicazione intera P1 * P2. Il risultato viene inserito nello stack.
-Terminazione in caso di overflow*/
+ Se non c'è overflow, la funzione restituisce 0, altrimenti restituisce -1*/
 void mul(int reg1, int reg2, int *regs, stack s, unsigned int *ip) {
     s->arr[s->sp] = regs[reg1] * regs[reg2];
     s->sp++;
     *ip+=3;
+    if(regs[reg1]>0 && regs[reg2]>0 && s->arr[s->sp] < 0)
+        return -1; 
+    if(regs[reg1]<0 && regs[reg2]<0 && s->arr[s->sp] > 0)
+        return -1;
+    return 0; 
 }
 
 /*Divisione intera P1 / P2. Il risultato viene inserito nello stack.
 Terminazione con errore in caso di divisione per zero*/
 void divi(int reg1, int reg2, int *regs, stack s, unsigned int *ip) {
-    s->arr[s->sp] = regs[reg1] / regs[reg2];
-    s->sp++;
-    *ip+=3;
+    if(regs[reg2]==0)
+        return -1;
+    else {
+        s->arr[s->sp] = regs[reg1] / regs[reg2];
+        s->sp++;
+        *ip+=3;
+    return 0;
 }
