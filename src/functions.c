@@ -113,7 +113,7 @@ void add(int reg1, int reg2, int *regs, stack s, unsigned int *ip) {
 }
 
 /*Sottrazione intera P1 - P2. Il risultato viene inserito nello stack.
-Terminazione i Se non c'è overflow, la funzione restituisce 0, altrimenti restituisce -1*/
+Terminazione i Se non c'è overflow, la funzione restituisce 0, altrimenti restituisce -1
 n caso di overflow*/
 void sub(int reg1, int reg2, int *regs, stack s, unsigned int *ip) {
     s->arr[s->sp] = regs[reg1] - regs[reg2];
