@@ -1,7 +1,9 @@
-#include "functions.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <assert.h>
+#include "interfaces.h"
+#include "read.h"
+#include "execute.h"
 
 int regs[32] = {0};
 unsigned int ip = 0;
@@ -169,17 +171,20 @@ void divi(int reg1, int reg2) {
     }
 }
 
-void exe(int *arr, int len) {
+void esegui(char *str) {
+    int len = 0;
+    int *arr = load(&(*str), &len);
+    assert(arr);
     s = (stack)malloc(sizeof(struct node));
     assert(s);
     s->arr[0] = 0;
     s->sp = 0;
 
-    assert(arr);
     do {
         switch(arr[ip]) {
             case 0:
                 free(s);
+                free(arr);
                 ip = 0;
                 return;
             case 1:

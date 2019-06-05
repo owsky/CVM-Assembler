@@ -1,3 +1,5 @@
+#ifndef interfaces
+#define interfaces
 #include <stdlib.h>
 
 typedef struct node {
@@ -11,6 +13,7 @@ typedef struct tab {
     char name[11];
 } *table;
 
+void addFunction(table *t, int cod, int par);
 void loadTable(table *t);
 table match(table *t, int num);
 int isReg(table *t);
@@ -18,3 +21,4 @@ void destroy(table *t);
 void overflow();
 void stackOverflow();
 void stackUnderflow();
+#endif

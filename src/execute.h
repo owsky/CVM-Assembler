@@ -1,5 +1,3 @@
-#include "interfaces.h"
-
 void display(int reg);
 void print_stack(int num);
 void push(int reg);
@@ -17,4 +15,4 @@ void add(int reg1, int reg2);
 void sub(int reg1, int reg2);
 void mul(int reg1, int reg2);
 void divi(int reg1, int reg2);
-void exe(int *arr, int len);
+void esegui(char *s);

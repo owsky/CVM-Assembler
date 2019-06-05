@@ -1,7 +1,7 @@
-#include "interfaces.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include "interfaces.h"
 
 void destroy(table *t) {
     int i;
@@ -10,10 +10,20 @@ void destroy(table *t) {
     }
 }
 
+void addFunction(table *t, int cod, int par) {
+    if(t == NULL) {
+        *t = (table)malloc(sizeof(struct tab));
+        (*t)->cod = cod;
+        (*t)->par = par;
+    }
+}
+
 void loadTable(table *t) {
+
+
     int i;
     for(i=0; i<16; i++) {
-        t[i] = (table)malloc(sizeof(struct node));
+        t[i] = (table)malloc(sizeof(struct tab));
     }
 
     t[0]->cod = 0;
