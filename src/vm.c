@@ -7,16 +7,39 @@
 #include "print.h"
 #include "execute.h"
 
-int main() {
+int main(int argc, char **argv) {
+    /*
     char *input;
     size_t dim = 0;
     char *token, command[100], parameter[100];
-    int i;
+    */
 
+
+    int i;
     table *t = NULL;
     loadTable(t);
     assert(t);
 
+    switch(argc) {
+        case 1:
+            printf("Nessun file selezionato\n");
+            break;
+        case 2:
+            for(i = 0; *argv[i]; i++){
+                *argv[i] = tolower(*argv[i]);
+            }
+            if(!strcmp(argv[1], "esegui")) {
+                esegui(argv[1]);
+            } else if(!strcmp(argv[1], "stampa")) {
+                stampa(argv[1], t);
+            }
+            break;
+        default:
+            printf("Errore\n");
+            break;
+    }
+
+/*
     do {
         printf("Inserisci un comando\n");
         getline(&input, &dim, stdin);
@@ -47,6 +70,7 @@ int main() {
         }
     }while(strcmp(command, "esci"));
     free(input);
+    */
     destroy(t);
     return 0;
 }

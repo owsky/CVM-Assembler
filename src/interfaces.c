@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <assert.h>
 #include "interfaces.h"
 
 void destroy(table *t) {
@@ -10,98 +11,78 @@ void destroy(table *t) {
     }
 }
 
-void addFunction(table *t, int cod, int par) {
+void addFunction(table *t, int cod, int par, int *reg, char *name) {
     if(t == NULL) {
         *t = (table)malloc(sizeof(struct tab));
+        assert(t);
         (*t)->cod = cod;
         (*t)->par = par;
+        if(par > 0 && reg != NULL) {
+            if(par == 1) {
+                (*t)->reg[0] = reg[0];
+            } else if(par == 2) {
+                (*t)->reg[0] = reg[0];
+                (*t)->reg[1] = reg[1];
+            }
+        }
+        strcpy((*t)->name, name);
+    } else {
+        addFunction(t+1, cod, par, reg, name);
     }
 }
 
 void loadTable(table *t) {
+    int reg[2];
+    addFunction(t, 0, 0, NULL, "HALT");
 
+    reg[0] = 1;
+    addFunction(t, 1, 1, reg, "DISPLAY");
 
-    int i;
-    for(i=0; i<16; i++) {
-        t[i] = (table)malloc(sizeof(struct tab));
-    }
+    reg[0] = 0;
+    addFunction(t, 2, 1, reg, "PRINT_STACK");
 
-    t[0]->cod = 0;
-    t[0]->par = 0;
-    strcpy(t[0]->name, "HALT");
+    reg[0] = 1;
+    addFunction(t, 10, 1, reg, "PUSH");
 
-    t[1]->cod = 1;
-    t[1]->par = 1;
-    t[1]->reg[0] = 1;
-    strcpy(t[1]->name, "DISPLAY");
+    reg[0] = 1;
+    addFunction(t, 11, 1, reg, "POP");
 
-    t[2]->cod = 2;
-    t[2]->par = 1;
-    t[2]->reg[0] = 0;
-    strcpy(t[2]->name, "PRINT_STACK");
+    reg[0] = 1;
+    addFunction(t, 12, 2, reg, "MOV");
 
-    t[3]->cod = 10;
-    t[3]->par = 1;
-    t[3]->reg[0] = 1;
-    strcpy(t[3]->name, "PUSH");
+    reg[0] = 0;
+    addFunction(t, 20, 1, reg, "CALL");
 
-    t[4]->cod = 11;
-    t[4]->par = 1;
-    t[4]->reg[0] = 1;
-    strcpy(t[4]->name, "POP");
+    reg[0]= 0;
+    addFunction(t, 21, 1, reg, "RET");
 
-    t[5]->cod = 12;
-    t[5]->par = 2;
-    t[5]->reg[0] = 1;
-    strcpy(t[5]->name, "MOV");
+    reg[0] = 0;
+    addFunction(t, 22, 1, reg, "JMP");
 
-    t[6]->cod = 20;
-    t[6]->par = 1;
-    strcpy(t[6]->name, "CALL");
+    reg[0] = 0;
+    addFunction(t, 23, 1, reg, "JZ");
 
-    t[7]->cod = 21;
-    t[7]->par = 0;
-    strcpy(t[7]->name, "RET");
+    reg[0] = 0;
+    addFunction(t, 24, 1, reg, "JPOS");
 
-    t[8]->cod = 22;
-    t[8]->par = 1;
-    strcpy(t[8]->name, "JMP");
+    reg[0] = 0;
+    addFunction(t, 25, 1, reg, "JNEG");
 
-    t[9]->cod = 23;
-    t[9]->par = 1;
-    strcpy(t[9]->name, "JZ");
+    reg[0] = 1;
+    reg[1] = 1;
+    addFunction(t, 30, 2, reg, "ADD");
 
-    t[10]->cod = 24;
-    t[10]->par = 1;
-    strcpy(t[10]->name, "JPOS");
+    reg[0] = 1;
+    reg[1] = 1;
+    addFunction(t, 31, 2, reg, "SUB");
 
-    t[11]->cod = 25;
-    t[11]->par = 1;
-    strcpy(t[11]->name, "JNEG");
+    reg[0] = 1;
+    reg[1] = 1;
+    addFunction(t, 32, 2, reg, "MUL");
 
-    t[12]->cod = 30;
-    t[12]->par = 2;
-    t[12]->reg[0] = 1;
-    t[12]->reg[1] = 1;
-    strcpy(t[12]->name, "ADD");
-
-    t[13]->cod = 31;
-    t[13]->par = 2;
-    t[13]->reg[0] = 1;
-    t[13]->reg[1] = 1;
-    strcpy(t[13]->name, "SUB");
-
-    t[14]->cod = 32;
-    t[14]->par = 2;
-    t[14]->reg[0] = 1;
-    t[14]->reg[1] = 1;
-    strcpy(t[14]->name, "MUL");
-
-    t[15]->cod = 33;
-    t[15]->par = 2;
-    t[15]->reg[0] = 1;
-    t[15]->reg[1] = 1;
-    strcpy(t[9]->name, "DIV");
+    reg[0] = 1;
+    reg[1] = 1;
+    addFunction(t, 33, 2, reg, "DIV");
 }
 
 table match(table *t, int num) {

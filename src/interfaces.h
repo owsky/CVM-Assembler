@@ -13,7 +13,7 @@ typedef struct tab {
     char name[11];
 } *table;
 
-void addFunction(table *t, int cod, int par);
+void addFunction(table **t, int cod, int par, int *reg, char *name);
 void loadTable(table *t);
 table match(table *t, int num);
 int isReg(table *t);
