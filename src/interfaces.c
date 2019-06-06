@@ -4,15 +4,8 @@
 #include <assert.h>
 #include "interfaces.h"
 
-void destroy(table *t) {
-    int i;
-    for(i=0; i<16; i++) {
-        free(t[i]);
-    }
-}
-
 void addFunction(table *t, int cod, int par, int *reg, char *name) {
-    if(t == NULL) {
+    if(*t == NULL) {
         *t = (table)malloc(sizeof(struct tab));
         assert(t);
         (*t)->cod = cod;
@@ -26,8 +19,9 @@ void addFunction(table *t, int cod, int par, int *reg, char *name) {
             }
         }
         strcpy((*t)->name, name);
+        (*t)->next = NULL;
     } else {
-        addFunction(t+1, cod, par, reg, name);
+        addFunction(&(*t)->next, cod, par, reg, name);
     }
 }
 
@@ -93,6 +87,13 @@ table match(table *t, int num) {
         }
     }
     return NULL;
+}
+
+void destroy(table t) {
+    if(t->next) {
+        destroy(t->next);
+    }
+    free(t);
 }
 
 void overflow() {

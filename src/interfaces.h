@@ -11,13 +11,14 @@ typedef struct tab {
     int cod, par;
     int reg[2];
     char name[11];
+    struct tab *next;
 } *table;
 
-void addFunction(table **t, int cod, int par, int *reg, char *name);
+void addFunction(table *t, int cod, int par, int *reg, char *name);
 void loadTable(table *t);
 table match(table *t, int num);
 int isReg(table *t);
-void destroy(table *t);
+void destroy(table t);
 void overflow();
 void stackOverflow();
 void stackUnderflow();

@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <assert.h>
 #include "read.h"
 
 int checkComment(char *s) {
@@ -49,14 +50,12 @@ int *load(char *str, int *len) {
     size_t dim = 0;
     FILE *stream = fopen(str, "r");
     if(stream == NULL) {
-        printf("File not found\n");
-        return NULL;
+        printf("File non trovato\n");
+        exit(1);
     }
     *len = getSize(stream);
     arr = (int*)malloc(sizeof(int) * *len);
-    if(!arr) {
-        exit(1);
-    }
+    assert(arr);
 
     while(getline(&line, &dim, stream)) {
         if(i >= *len) {
