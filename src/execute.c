@@ -127,10 +127,9 @@ void add(int reg1, int reg2) {
     int res = regs[reg1] + regs[reg2];
     pushInternal(res);
     ip+=3;
-    if(regs[reg1]>0 && regs[reg2]>0 && res < 0) {
-        overflow();
-    } else if(regs[reg1]<0 && regs[reg2]<0 && res > 0) {
-        overflow();
+    if((regs[reg1]>0 && regs[reg2]>0 && res < 0) ||
+       (regs[reg1]<0 && regs[reg2]<0 && res > 0)) {
+           overflow();
     }
 }
 
@@ -139,10 +138,9 @@ void sub(int reg1, int reg2) {
     int res = regs[reg1] - regs[reg2];
     pushInternal(res);
     ip+=3;
-    if(regs[reg1]>0 && regs[reg2]<0 && res < 0) {
-        overflow();
-    } else if(regs[reg1]<0 && regs[reg2]>0 && res > 0) {
-        overflow();
+    if((regs[reg1]>0 && regs[reg2]<0 && res < 0) ||
+       (regs[reg1]<0 && regs[reg2]>0 && res > 0)) {
+           overflow();
     }
 }
 
@@ -152,10 +150,12 @@ void mul(int reg1, int reg2) {
     int res = regs[reg1] * regs[reg2];
     pushInternal(res);
     ip+=3;
-    if(regs[reg1]>0 && regs[reg2]>0 && res < 0)
-        overflow();
-    if(regs[reg1]<0 && regs[reg2]<0 && res > 0)
-        overflow();
+    if((regs[reg1]>0 && regs[reg2]>0 && res < 0) ||
+       (regs[reg1]<0 && regs[reg2]<0 && res < 0) ||
+       (regs[reg1]>0 && regs[reg2]<0 && res > 0) ||
+       (regs[reg1]<0 && regs[reg2]>0 && res > 0)) {
+           overflow();
+    }
 }
 
 /*Divisione intera P1 / P2. Il risultato viene inserito nello stack.
@@ -168,6 +168,12 @@ void divi(int reg1, int reg2) {
         int res = regs[reg1] / regs[reg2];
         pushInternal(res);
         ip+=3;
+        if((regs[reg1]>0 && regs[reg2]>0 && res < 0) ||
+           (regs[reg1]<0 && regs[reg2]<0 && res < 0) ||
+           (regs[reg1]>0 && regs[reg2]<0 && res > 0) ||
+           (regs[reg1]<0 && regs[reg2]>0 && res > 0)) {
+               overflow();
+        }
     }
 }
 

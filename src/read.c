@@ -4,15 +4,17 @@
 #include <assert.h>
 #include "read.h"
 
-int checkComment(char *s) {
+int checkNumber(char *s) {
     int i = 0;
     while(s[i] != '\0') {
-        if(s[i] >= 48 && s[i] <= 57) {
+        if(s[i] == ';') {
             return 0;
+        } else if(s[i] >= 48 && s[i] <= 57) {
+            return 1;
         }
         i++;
     }
-    return 1;
+    return 0;
 }
 
 void padding(int size, int pos) {
@@ -31,7 +33,7 @@ int getSize(FILE *input) {
     int res;
     size_t dime = 0;
     while(getline(&linea, &dime, input)) {
-        if(!checkComment(linea)) {
+        if(checkNumber(linea)) {
             num = strtok(linea, delim);
             res = atoi(num);
             free(linea);
@@ -48,7 +50,8 @@ int *load(char *str, int *len) {
     int c, i = 0, *arr;
     char *num, *line, delim[] = " ;";
     size_t dim = 0;
-    FILE *stream = fopen(str, "r");
+    FILE *stream;
+    stream = fopen(str, "r");
     if(stream == NULL) {
         printf("File non trovato\n");
         exit(1);
@@ -61,7 +64,7 @@ int *load(char *str, int *len) {
         if(i >= *len) {
             break;
         }
-        if(!checkComment(line)) {
+        if(checkNumber(line)) {
             num = strtok(line, delim);
             c = atoi(num);
             num = strtok(NULL, delim);

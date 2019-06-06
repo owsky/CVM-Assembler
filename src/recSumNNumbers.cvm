@@ -9,7 +9,7 @@
 0; termina il programma
 10; salva nello stack il contenuto del registro 1
 1;
-24; jump a riga 13 se il valore prelevato dallo stack è maggiore di 0
+24; jump a riga 13 se il valore prelevato dallo stack ï¿½ maggiore di 0
 13;
 21; return
 12; inserisci 1 nel registro 2

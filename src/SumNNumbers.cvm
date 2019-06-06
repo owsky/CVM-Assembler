@@ -1,7 +1,7 @@
 35
 12 ; MOV R0 100
 0
-100 ;numero n. Programma calcola la somma dei primi n numeri
+10 ;numero n. Programma calcola la somma dei primi n numeri
 20 ; CALL somma
 8
 1 ; DISPLAY R31
