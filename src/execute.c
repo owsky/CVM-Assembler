@@ -5,8 +5,11 @@
 #include "read.h"
 #include "execute.h"
 
+/*Array dei registri interni*/
 int regs[32] = {0};
+/*Instruction pointer*/
 unsigned int ip = 0;
+/*Stack*/
 stack s = NULL;
 
 /*Stampa su console il valore del registro indicato*/
@@ -15,10 +18,7 @@ void display(int reg) {
     ip+=2;
 }
 
-/*stampa su console il numero indicato di posizioni dello stack.
-Stampare le posizioni in ordine inverso a partire dalla posizione SP-1
-fino a SP-N inclusa.
-Stampare l’indice della posizione ed il valore in essa contenuto*/
+/*Stampa su console il numero indicato di posizioni dello stack*/
 void print_stack(int num) {
     while(num > 0) {
         printf("%d: %d\n", num, s->arr[num]);
@@ -31,16 +31,17 @@ void print_stack(int num) {
 ed incrementa SP*/
 void push(int reg) {
     if(s->sp >= 65536/sizeof(int)) {
-        stackOverflow();
+        overflow(1);
     }
     s->arr[s->sp] = regs[reg];
     s->sp++;
     ip += 2;
 }
 
+/*Push con integer anziché registri*/
 void pushInternal(int num) {
     if(s->sp >= 65536/sizeof(int)) {
-        stackOverflow();
+        overflow(1);
     }
     s->arr[s->sp] = num;
     s->sp++;
@@ -50,16 +51,17 @@ void pushInternal(int num) {
 nel registro indicato*/
 void pop(int reg) {
     if(s->sp <= 0) {
-        stackUnderflow();
+        overflow(-1);
     }
     s->sp--;
     regs[reg] = s->arr[s->sp];
     ip += 2;
 }
 
+/*Pop con integer anziché registri*/
 int popInternal() {
     if(s->sp <= 0) {
-        stackUnderflow();
+        overflow(-1);
     }
     s->sp--;
     return s->arr[s->sp];
@@ -129,7 +131,7 @@ void add(int reg1, int reg2) {
     ip+=3;
     if((regs[reg1]>0 && regs[reg2]>0 && res < 0) ||
        (regs[reg1]<0 && regs[reg2]<0 && res > 0)) {
-           overflow();
+           overflow(0);
     }
 }
 
@@ -140,7 +142,7 @@ void sub(int reg1, int reg2) {
     ip+=3;
     if((regs[reg1]>0 && regs[reg2]<0 && res < 0) ||
        (regs[reg1]<0 && regs[reg2]>0 && res > 0)) {
-           overflow();
+           overflow(0);
     }
 }
 
@@ -154,7 +156,7 @@ void mul(int reg1, int reg2) {
        (regs[reg1]<0 && regs[reg2]<0 && res < 0) ||
        (regs[reg1]>0 && regs[reg2]<0 && res > 0) ||
        (regs[reg1]<0 && regs[reg2]>0 && res > 0)) {
-           overflow();
+           overflow(0);
     }
 }
 
@@ -172,20 +174,22 @@ void divi(int reg1, int reg2) {
            (regs[reg1]<0 && regs[reg2]<0 && res < 0) ||
            (regs[reg1]>0 && regs[reg2]<0 && res > 0) ||
            (regs[reg1]<0 && regs[reg2]>0 && res > 0)) {
-               overflow();
+               overflow(0);
         }
     }
 }
 
+/*Parse ed esecuzione delle istruzioni*/
 void esegui(char *str) {
     int len = 0;
+    /*Caricamento delle istruzioni da file in un array*/
     int *arr = load(&(*str), &len);
     assert(arr);
+    /*Istanziazione della stack*/
     s = (stack)malloc(sizeof(struct node));
     assert(s);
-    s->arr[0] = 0;
-    s->sp = 0;
 
+    /*Parse delle istruzioni*/
     do {
         switch(arr[ip]) {
             case 0:
@@ -239,6 +243,7 @@ void esegui(char *str) {
                 divi(arr[ip+1], arr[ip+2]);
                 break;
             default:
+                printf("Istruzione non supportata\n");
                 break;
         }
     }while((int)ip < len);

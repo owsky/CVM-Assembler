@@ -4,6 +4,7 @@
 #include <assert.h>
 #include "read.h"
 
+/*Controlla se la stringa fornita contiene un intero*/
 int checkNumber(char *s) {
     int i = 0;
     while(s[i] != '\0') {
@@ -17,6 +18,7 @@ int checkNumber(char *s) {
     return 0;
 }
 
+/*Gestione padding degli indici per la stampa*/
 void padding(int size, int pos) {
     do {
         size /= 10;
@@ -28,6 +30,8 @@ void padding(int size, int pos) {
     }
 }
 
+/*Ritorna il numero di righe del file, escluse quelle prive di istruzioni
+o commenti*/
 int getSize(FILE *input) {
     char *num, *linea, delim[] = " ;";
     int res;
@@ -46,24 +50,26 @@ int getSize(FILE *input) {
     return -1;
 }
 
+/*Data una stringa contenente il nome del file effettua l'apertura carica le
+istruzioni in un array e ne ritorna il puntatore*/
 int *load(char *str, int *len) {
     int c, i = 0, *arr;
     char *num, *line, delim[] = " ;";
     size_t dim = 0;
-    FILE *stream;
-    stream = fopen(str, "r");
-    if(stream == NULL) {
+
+    /*Apertura file*/
+    FILE *stream = fopen(str, "r");
+    if(!stream) {
         printf("File non trovato\n");
         exit(1);
     }
+
+    /*Istanziazione dinamica dell'array*/
     *len = getSize(stream);
-    arr = (int*)malloc(sizeof(int) * *len);
+    arr = (int*)malloc(sizeof(int) * (*len));
     assert(arr);
 
-    while(getline(&line, &dim, stream)) {
-        if(i >= *len) {
-            break;
-        }
+    while(i < *len && getline(&line, &dim, stream)) {
         if(checkNumber(line)) {
             num = strtok(line, delim);
             c = atoi(num);
