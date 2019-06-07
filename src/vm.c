@@ -1,3 +1,4 @@
+/*Nicolò Bertocco 873896 - Beatrice Messano NUMEROMATRICOLA*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -7,7 +8,9 @@
 #include "execute.h"
 
 int main(int argc, char **argv) {
-    /*int i;*/
+    int i;
+    char command[10];
+    /*Creazione della tabella delle funzioni*/
     table t = NULL;
     loadTable(&t);
     assert(t);
@@ -20,12 +23,12 @@ int main(int argc, char **argv) {
             printf("Nessun file selezionato\n");
             break;
         case 3:
-        /*
-            for(i = 0; *argv[i]; i++){
-                *argv[i] = tolower(*argv[i]);
+            /*Gestione case dei comandi*/
+            strcpy(command, argv[1]);
+            for(i = 0; command[i]; i++){
+                command[i] = tolower(command[i]);
             }
-            */
-            if(!strcmp(argv[1], "esegui")) {
+            if(!strcmp(command, "esegui")) {
                 esegui(argv[2]);
             }
             break;
