@@ -4,91 +4,48 @@
 #include <assert.h>
 #include "interfaces.h"
 
-void addFunction(table *t, int cod, int par, int *reg, char *name) {
+/*Popola la tabella delle funzioni*/
+void addFunction(table *t, int cod, char *p1, char *p2, char *name) {
     if(*t == NULL) {
         *t = (table)malloc(sizeof(struct tab));
         assert(t);
         (*t)->cod = cod;
-        (*t)->par = par;
-        if(par > 0 && reg != NULL) {
-            if(par == 1) {
-                (*t)->reg[0] = reg[0];
-            } else if(par == 2) {
-                (*t)->reg[0] = reg[0];
-                (*t)->reg[1] = reg[1];
+        if(p1) {
+            strcpy((*t)->p1, p1);
+            (*t)->par++;
+            if(p2) {
+                strcpy((*t)->p2, p2);
+                (*t)->par++;
             }
         }
         strcpy((*t)->name, name);
         (*t)->next = NULL;
     } else {
-        addFunction(&(*t)->next, cod, par, reg, name);
+        addFunction(&(*t)->next, cod, p1, p2, name);
     }
 }
 
+/*Chiama le funzioni per popolare la tabella*/
 void loadTable(table *t) {
-    int reg[2];
-    addFunction(t, 0, 0, NULL, "HALT");
-
-    reg[0] = 1;
-    addFunction(t, 1, 1, reg, "DISPLAY");
-
-    reg[0] = 0;
-    addFunction(t, 2, 1, reg, "PRINT_STACK");
-
-    reg[0] = 1;
-    addFunction(t, 10, 1, reg, "PUSH");
-
-    reg[0] = 1;
-    addFunction(t, 11, 1, reg, "POP");
-
-    reg[0] = 1;
-    addFunction(t, 12, 2, reg, "MOV");
-
-    reg[0] = 0;
-    addFunction(t, 20, 1, reg, "CALL");
-
-    reg[0]= 0;
-    addFunction(t, 21, 1, reg, "RET");
-
-    reg[0] = 0;
-    addFunction(t, 22, 1, reg, "JMP");
-
-    reg[0] = 0;
-    addFunction(t, 23, 1, reg, "JZ");
-
-    reg[0] = 0;
-    addFunction(t, 24, 1, reg, "JPOS");
-
-    reg[0] = 0;
-    addFunction(t, 25, 1, reg, "JNEG");
-
-    reg[0] = 1;
-    reg[1] = 1;
-    addFunction(t, 30, 2, reg, "ADD");
-
-    reg[0] = 1;
-    reg[1] = 1;
-    addFunction(t, 31, 2, reg, "SUB");
-
-    reg[0] = 1;
-    reg[1] = 1;
-    addFunction(t, 32, 2, reg, "MUL");
-
-    reg[0] = 1;
-    reg[1] = 1;
-    addFunction(t, 33, 2, reg, "DIV");
+    addFunction(t, 0, NULL, NULL, "HALT");
+    addFunction(t, 1, "reg", NULL, "DISPLAY");
+    addFunction(t, 2, "int", NULL, "PRINT_STACK");
+    addFunction(t, 10, "reg", NULL, "PUSH");
+    addFunction(t, 11, "reg", NULL, "POP");
+    addFunction(t, 12, "reg", "int", "MOV");
+    addFunction(t, 20, "int", NULL, "CALL");
+    addFunction(t, 21, NULL, NULL, "RET");
+    addFunction(t, 22, "int", NULL, "JMP");
+    addFunction(t, 23, "int", NULL, "JZ");
+    addFunction(t, 24, "int", NULL, "JPOS");
+    addFunction(t, 25, "int", NULL, "JNEG");
+    addFunction(t, 30, "reg", "reg", "ADD");
+    addFunction(t, 31, "reg", "reg", "SUB");
+    addFunction(t, 32, "reg", "reg", "MUL");
+    addFunction(t, 33, "reg", "reg", "DIV");
 }
 
-table match(table *t, int num) {
-    int i;
-    for(i=0; i<16; i++) {
-        if(num == t[i]->cod) {
-            return t[i];
-        }
-    }
-    return NULL;
-}
-
+/*Distruzione ricorsiva della tabella*/
 void destroy(table t) {
     if(t->next) {
         destroy(t->next);
@@ -96,17 +53,14 @@ void destroy(table t) {
     free(t);
 }
 
-void overflow() {
-    printf("Overflow\n");
-    exit(1);
-}
-
-void stackUnderflow() {
-    printf("Stack underflow\n");
-    exit(1);
-}
-
-void stackOverflow() {
-    printf("Stack overflow\n");
+/*Gestione overflow*/
+void overflow(int t) {
+    if(t == 0) {
+        printf("Overflow\n");
+    } else if(t == 1) {
+        printf("Stack Overflow\n");
+    } else {
+        printf("Stack Underflow\n");
+    }
     exit(1);
 }

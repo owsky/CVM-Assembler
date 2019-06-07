@@ -2,24 +2,23 @@
 #define interfaces
 #include <stdlib.h>
 
+/*Definizione stack*/
 typedef struct node {
     int arr[65536/sizeof(int)];
     unsigned int sp;
 } *stack;
 
+/*Definizione tabella funzioni*/
 typedef struct tab {
-    int cod, par;
-    int reg[2];
-    char name[11];
+    int cod;
+    int par;
+    char p1[10], p2[10];
+    char name[15];
     struct tab *next;
 } *table;
 
-void addFunction(table *t, int cod, int par, int *reg, char *name);
+void addFunction(table *t, int cod, char *p1, char *p2, char *name);
 void loadTable(table *t);
-table match(table *t, int num);
-int isReg(table *t);
 void destroy(table t);
-void overflow();
-void stackOverflow();
-void stackUnderflow();
+void overflow(int t);
 #endif
