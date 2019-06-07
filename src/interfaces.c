@@ -10,6 +10,8 @@ void addFunction(table *t, int cod, char *p1, char *p2, char *name) {
         *t = (table)malloc(sizeof(struct tab));
         assert(t);
         (*t)->cod = cod;
+
+        /*Store del tipo dei parametri*/
         if(p1) {
             strcpy((*t)->p1, p1);
             (*t)->par++;
@@ -18,6 +20,7 @@ void addFunction(table *t, int cod, char *p1, char *p2, char *name) {
                 (*t)->par++;
             }
         }
+        
         strcpy((*t)->name, name);
         (*t)->next = NULL;
     } else {
