@@ -1,9 +1,9 @@
-/*Nicolò Bertocco 873896 - Beatrice Messano NUMEROMATRICOLA*/
+/*Nicolò Bertocco 873896 - Beatrice Messano 876673*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
-#include <ctype.h>
+#include <ctype.h> /*dichiara diverse funzioni utili per testare e mappare caratteri.*/
 #include "interfaces.h"
 #include "execute.h"
 
