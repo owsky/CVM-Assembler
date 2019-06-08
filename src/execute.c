@@ -36,7 +36,7 @@ void print_stack(int num) {
 /*Inserisce il contenuto del registro indicato nello stack (in posizione SP)
 ed incrementa SP*/
 void push(int reg) {
-    if(s->sp >= 16384) {
+    if(s->sp >= dimStack) {
         overflow(1);
     }
     s->arr[s->sp] = regs[reg];
@@ -46,7 +46,7 @@ void push(int reg) {
 
 /*Push con integer anziché registri*/
 void pushInternal(int num) {
-    if(s->sp >= 16384) {
+    if(s->sp >= dimStack) {
         overflow(1);
     }
     s->arr[s->sp] = num;
