@@ -26,9 +26,14 @@ void display(int reg) {
 
 /*Stampa su console il numero indicato di posizioni dello stack*/
 void print_stack(int num) {
-    while(num > 0) {
-        printf("%d: %d\n", num, s->arr[num]);
+    int dim = s->sp-1;
+    while(dim >= 0) {
+        printf("%d: %d\n", num-1, s->arr[dim]);
         num--;
+        dim--;
+    }
+    if(num > 0) {
+        overflow(3);
     }
     ip+=2;
 }
@@ -37,7 +42,7 @@ void print_stack(int num) {
 ed incrementa SP*/
 void push(int reg) {
     if(s->sp >= dimStack) {
-        overflow(1);
+        overflow(2);
     }
     s->arr[s->sp] = regs[reg];
     s->sp++;
@@ -47,7 +52,7 @@ void push(int reg) {
 /*Push con integer anziché registri*/
 void pushInternal(int num) {
     if(s->sp >= dimStack) {
-        overflow(1);
+        overflow(2);
     }
     s->arr[s->sp] = num;
     s->sp++;
@@ -57,7 +62,7 @@ void pushInternal(int num) {
 nel registro indicato*/
 void pop(int reg) {
     if(s->sp <= 0) {
-        overflow(-1);
+        overflow(3);
     }
     s->sp--;
     regs[reg] = s->arr[s->sp];
@@ -67,7 +72,7 @@ void pop(int reg) {
 /*Pop con integer anziché registri*/
 int popInternal() {
     if(s->sp <= 0) {
-        overflow(-1);
+        overflow(3);
     }
     s->sp--;
     return s->arr[s->sp];

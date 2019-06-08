@@ -70,8 +70,10 @@ void overflow(int t) {
         case 2:
             printf("Stack Overflow\n");
             break;
-        default:
+        case 3:
             printf("Stack Underflow\n");
+            break;
+        default:
             break;
     }
     halt();
