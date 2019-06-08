@@ -1,3 +1,4 @@
+/*Nicolò Bertocco 873896 - Beatrice Messano NUMEROMATRICOLA*/
 #include <stdio.h>
 
 int checkNumber(char *s);

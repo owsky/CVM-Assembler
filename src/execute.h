@@ -1,3 +1,4 @@
+/*Nicolò Bertocco 873896 - Beatrice Messano NUMEROMATRICOLA*/
 void display(int reg);
 void print_stack(int num);
 void push(int reg);
@@ -16,3 +17,4 @@ void sub(int reg1, int reg2);
 void mul(int reg1, int reg2);
 void divi(int reg1, int reg2);
 void esegui(char *s);
+void halt();
