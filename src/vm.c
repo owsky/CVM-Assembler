@@ -30,6 +30,8 @@ int main(int argc, char **argv) {
             }
             if(!strcmp(command, "esegui")) {
                 esegui(argv[2]);
+            } else {
+                printf("Comando non supportato\n");
             }
             break;
         default:
