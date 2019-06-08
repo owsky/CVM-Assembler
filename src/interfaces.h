@@ -1,10 +1,11 @@
+/*Nicolò Bertocco 873896 - Beatrice Messano NUMEROMATRICOLA*/
 #ifndef interfaces
 #define interfaces
 #include <stdlib.h>
 
 /*Definizione stack*/
 typedef struct node {
-    int arr[65536/sizeof(int)];
+    int arr[16384];
     unsigned int sp;
 } *stack;
 
