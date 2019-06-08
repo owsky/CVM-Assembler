@@ -142,9 +142,9 @@ void add(int reg1, int reg2) {
 
 /*Sottrazione intera P1 - P2. Il risultato viene inserito nello stack*/
 void sub(int reg1, int reg2) {
-    if(regs[reg1] > 0 && regs[reg2] < MAX_INT - regs[reg1]) {
+    if(regs[reg1] > 0 && regs[reg2] < 0 && regs[reg2] < MAX_INT - regs[reg1]) {
         overflow(0);
-    } else if(regs[reg1] < 0 && regs[reg2] > (MIN_INT-1) - regs[reg1]) {
+    } else if(regs[reg1] < 0 && regs[reg2] > 0 && regs[reg2] > (MIN_INT-1) - regs[reg1]) {
         overflow(1);
     }
     pushInternal(regs[reg1] - regs[reg2]);
