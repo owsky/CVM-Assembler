@@ -1,3 +1,4 @@
+/*Nicolò Bertocco 873896 - Beatrice Messano NUMEROMATRICOLA*/
 #include <stdlib.h>
 #include <stdio.h>
 #include <assert.h>
@@ -5,12 +6,17 @@
 #include "read.h"
 #include "execute.h"
 
+#define MAX_INT  2147483647
+#define MIN_INT -2147483647
+
 /*Array dei registri interni*/
 int regs[32] = {0};
 /*Instruction pointer*/
 unsigned int ip = 0;
 /*Stack*/
 stack s = NULL;
+/*Array delle istruzioni*/
+int *arr;
 
 /*Stampa su console il valore del registro indicato*/
 void display(int reg) {
@@ -30,7 +36,7 @@ void print_stack(int num) {
 /*Inserisce il contenuto del registro indicato nello stack (in posizione SP)
 ed incrementa SP*/
 void push(int reg) {
-    if(s->sp >= 65536/sizeof(int)) {
+    if(s->sp >= dimStack) {
         overflow(1);
     }
     s->arr[s->sp] = regs[reg];
@@ -40,7 +46,7 @@ void push(int reg) {
 
 /*Push con integer anziché registri*/
 void pushInternal(int num) {
-    if(s->sp >= 65536/sizeof(int)) {
+    if(s->sp >= dimStack) {
         overflow(1);
     }
     s->arr[s->sp] = num;
@@ -91,10 +97,10 @@ void jmp(int pos) {
 }
 
 /*Sostituisce il valore di IP con il valore indicato se l’ultimo elemento
-inserito nello stack `e diverso da zero e lo rimuove, decrementando SP*/
+inserito nello stack `e uguale a zero e lo rimuove, decrementando SP*/
 void jz(int pos) {
     int num = popInternal();
-    if(num != 0) {
+    if(num == 0) {
         ip = pos;
     } else {
         ip+=2;
@@ -123,79 +129,71 @@ void jneg(int pos) {
     }
 }
 
-/*Addizione intera P1 + P2. Il risultato viene inserito nello stack.
- Se non c'è overflow, la funzione restituisce 0, altrimenti restituisce -1*/
+/*Addizione intera P1 + P2. Il risultato viene inserito nello stack*/
 void add(int reg1, int reg2) {
-    int res = regs[reg1] + regs[reg2];
-    pushInternal(res);
-    ip+=3;
-    if((regs[reg1]>0 && regs[reg2]>0 && res < 0) ||
-       (regs[reg1]<0 && regs[reg2]<0 && res > 0)) {
-           overflow(0);
+    if(regs[reg1] > 0 && regs[reg2] > MAX_INT - regs[reg1]) {
+        overflow(0);
+    } else if(regs[reg1] < 0 && regs[reg2] < (MIN_INT-1) - regs[reg1]) {
+        overflow(1);
     }
+    pushInternal(regs[reg1] + regs[reg2]);
+    ip+=3;
 }
 
 /*Sottrazione intera P1 - P2. Il risultato viene inserito nello stack*/
 void sub(int reg1, int reg2) {
-    int res = regs[reg1] - regs[reg2];
-    pushInternal(res);
-    ip+=3;
-    if((regs[reg1]>0 && regs[reg2]<0 && res < 0) ||
-       (regs[reg1]<0 && regs[reg2]>0 && res > 0)) {
-           overflow(0);
+    if(regs[reg1] > 0 && regs[reg2] < 0 && regs[reg2] < MAX_INT - regs[reg1]) {
+        overflow(0);
+    } else if(regs[reg1] < 0 && regs[reg2] > 0 && regs[reg2] > (MIN_INT-1) - regs[reg1]) {
+        overflow(1);
     }
+    pushInternal(regs[reg1] - regs[reg2]);
+    ip+=3;
 }
 
-/*Moltiplicazione intera P1 * P2. Il risultato viene inserito nello stack.
- Se non c'è overflow, la funzione restituisce 0, altrimenti restituisce -1*/
+/*Moltiplicazione intera P1 * P2. Il risultato viene inserito nello stack*/
 void mul(int reg1, int reg2) {
-    int res = regs[reg1] * regs[reg2];
-    pushInternal(res);
-    ip+=3;
-    if((regs[reg1]>0 && regs[reg2]>0 && res < 0) ||
-       (regs[reg1]<0 && regs[reg2]<0 && res < 0) ||
-       (regs[reg1]>0 && regs[reg2]<0 && res > 0) ||
-       (regs[reg1]<0 && regs[reg2]>0 && res > 0)) {
-           overflow(0);
+    if(regs[reg1] > 0 && regs[reg1] > MAX_INT / regs[reg2]) {
+        overflow(0);
+    } else if(regs[reg1] < 0 && regs[reg1] < (MIN_INT-1) / regs[reg2]) {
+        overflow(1);
     }
+    pushInternal(regs[reg1] * regs[reg2]);
+    ip+=3;
 }
 
 /*Divisione intera P1 / P2. Il risultato viene inserito nello stack.
 Terminazione con errore in caso di divisione per zero*/
 void divi(int reg1, int reg2) {
     if(regs[reg2]==0) {
-        printf("Divisione per 0\n");
+        printf("Impossibile dividere per 0\n");
         exit(1);
     } else {
-        int res = regs[reg1] / regs[reg2];
-        pushInternal(res);
+        pushInternal(regs[reg1] / regs[reg2]);
         ip+=3;
-        if((regs[reg1]>0 && regs[reg2]>0 && res < 0) ||
-           (regs[reg1]<0 && regs[reg2]<0 && res < 0) ||
-           (regs[reg1]>0 && regs[reg2]<0 && res > 0) ||
-           (regs[reg1]<0 && regs[reg2]>0 && res > 0)) {
-               overflow(0);
-        }
     }
+}
+
+void halt() {
+    free(s);
+    free(arr);
 }
 
 /*Parse ed esecuzione delle istruzioni*/
 void esegui(char *str) {
     int len = 0;
     /*Caricamento delle istruzioni da file in un array*/
-    int *arr = load(&(*str), &len);
+    arr = load(&(*str), &len);
     assert(arr);
     /*Istanziazione della stack*/
     s = (stack)malloc(sizeof(struct node));
     assert(s);
 
-    /*Parse delle istruzioni*/
+    /*Parse delle istruzioni tramite instruction pointer*/
     do {
         switch(arr[ip]) {
             case 0:
-                free(s);
-                free(arr);
-                ip = 0;
+                halt();
                 return;
             case 1:
                 display(arr[ip+1]);

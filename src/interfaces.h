@@ -1,10 +1,12 @@
+/*Nicolò Bertocco 873896 - Beatrice Messano NUMEROMATRICOLA*/
 #ifndef interfaces
 #define interfaces
 #include <stdlib.h>
 
+#define dimStack 16000
 /*Definizione stack*/
 typedef struct node {
-    int arr[65536/sizeof(int)];
+    int arr[dimStack];
     unsigned int sp;
 } *stack;
 

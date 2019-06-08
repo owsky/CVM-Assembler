@@ -1,3 +1,4 @@
+/*Nicolò Bertocco 873896 - Beatrice Messano NUMEROMATRICOLA*/
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -19,6 +20,7 @@ int checkNumber(char *s) {
 }
 
 /*Gestione padding degli indici per la stampa*/
+
 void padding(int size, int pos) {
     do {
         size /= 10;
@@ -29,7 +31,6 @@ void padding(int size, int pos) {
         printf(" ");
     }
 }
-
 /*Ritorna il numero di righe del file, escluse quelle prive di istruzioni
 o commenti*/
 int getSize(FILE *input) {
@@ -73,7 +74,6 @@ int *load(char *str, int *len) {
         if(checkNumber(line)) {
             num = strtok(line, delim);
             c = atoi(num);
-            num = strtok(NULL, delim);
             arr[i] = c;
             i++;
         }

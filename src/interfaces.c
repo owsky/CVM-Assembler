@@ -1,15 +1,19 @@
+/*Nicolò Bertocco 873896 - Beatrice Messano 876673*/
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
 #include <assert.h>
 #include "interfaces.h"
+#include "execute.h"
 
 /*Popola la tabella delle funzioni*/
 void addFunction(table *t, int cod, char *p1, char *p2, char *name) {
-    if(*t == NULL) {
+    if(!*t) {
         *t = (table)malloc(sizeof(struct tab));
         assert(t);
         (*t)->cod = cod;
+
+        /*Store del tipo dei parametri*/
         if(p1) {
             strcpy((*t)->p1, p1);
             (*t)->par++;
@@ -18,6 +22,7 @@ void addFunction(table *t, int cod, char *p1, char *p2, char *name) {
                 (*t)->par++;
             }
         }
+
         strcpy((*t)->name, name);
         (*t)->next = NULL;
     } else {
@@ -55,12 +60,20 @@ void destroy(table t) {
 
 /*Gestione overflow*/
 void overflow(int t) {
-    if(t == 0) {
-        printf("Overflow\n");
-    } else if(t == 1) {
-        printf("Stack Overflow\n");
-    } else {
-        printf("Stack Underflow\n");
+    switch(t) {
+        case 0:
+            printf("Overflow\n");
+            break;
+        case 1:
+            printf("Underflow\n");
+            break;
+        case 2:
+            printf("Stack Overflow\n");
+            break;
+        default:
+            printf("Stack Underflow\n");
+            break;
     }
+    halt();
     exit(1);
 }
