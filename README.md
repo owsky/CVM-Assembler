@@ -2,7 +2,7 @@
 This project is a simplified virtual machine that prints or executes assembly programs by crossreferencing its table of functions with a .cvm file. Each one is addressed through an integer code and may have one or two parameters.
 The supported commands are <italic>print</italic> and <italic>execute</italic> and both require a valid .cvm file. It's assumed that the input program is correct (minus the overflow, which was required to test for) and that it is written with the following specifics:
 <ul>
-  <li>The very first numbers represents the total number of lines minus the ones that contain only comments</li>
+  <li>The very first number represents the total number of lines minus the ones that contain only comments</li>
   <li>Comments are delimited by the semilicon character and comprehend the whole line on its right side</li>
   <li>Spaces and tabs are ignored so their use is not restricted</li>
 </ul>
