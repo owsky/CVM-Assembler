@@ -32,7 +32,7 @@ int main(int argc, char **argv) {
             if(!strcmp(command, "esegui")) {
                 esegui(argv[2]);
             } else if(!strcmp(command, "stampa")) {
-                stampa(argv[2], t);
+                stam(argv[2], t);
             } else {
                 printf("Comando non supportato\n");
             }
