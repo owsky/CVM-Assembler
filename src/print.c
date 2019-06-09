@@ -23,26 +23,26 @@ table match(table t, int b){
   return NULL;
 }
 
-void stampa(char *str, table *t) {
+void stampa(char *str, table t) {
     int i = 0,  len = 0, *arr = load(&(*str), &len);
     table c;
 
     if(arr != NULL){
       while(i<len){
-        c = match(*t, arr[i]);
+        c = match(t, arr[i]);
         printf("[%d], %s", i , c-> name);
         i++;
-        if((*t)->par>0){
-            
-            if(!strcmp((*t)-> p1, "reg")){
+        if(t->par>0){
+
+            if(!strcmp(t-> p1, "reg")){
               printf("R%d", arr[i]);
 
             }
             else {
               printf("%d", arr[i]);
             }
-            if((*t)-> p2 != NULL){
-              if(!strcmp((*t)-> p2, "reg")){
+            if(t-> p2 != NULL){
+              if(!strcmp(t-> p2, "reg")){
                 printf("R%d", arr[i+1]);
 
               }

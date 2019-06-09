@@ -6,6 +6,7 @@
 #include <ctype.h> /*dichiara diverse funzioni utili per testare e mappare caratteri.*/
 #include "interfaces.h"
 #include "execute.h"
+#include "print.h"
 
 int main(int argc, char **argv) {
     int i;
@@ -30,6 +31,8 @@ int main(int argc, char **argv) {
             }
             if(!strcmp(command, "esegui")) {
                 esegui(argv[2]);
+            } else if(!strcmp(command, "stampa")) {
+                stampa(argv[2], t);
             } else {
                 printf("Comando non supportato\n");
             }

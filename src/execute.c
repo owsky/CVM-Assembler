@@ -158,9 +158,13 @@ void sub(int reg1, int reg2) {
 
 /*Moltiplicazione intera P1 * P2. Il risultato viene inserito nello stack*/
 void mul(int reg1, int reg2) {
-    if(regs[reg1] > 0 && regs[reg1] > MAX_INT / regs[reg2]) {
+    if(regs[reg1] > 0 && regs[reg2] > 0 && regs[reg1] > MAX_INT / regs[reg2]) {
         overflow(0);
-    } else if(regs[reg1] < 0 && regs[reg1] < (MIN_INT-1) / regs[reg2]) {
+    } else if(regs[reg1] < 0 && regs[reg2] < 0 && regs[reg1] < MAX_INT / regs[reg2]) {
+        overflow(0);
+    } else if(regs[reg1] < 0 && regs[reg2] > 0 && regs[reg1] < (MIN_INT-1) / regs[reg2]) {
+        overflow(1);
+    } else if(regs[reg1] > 0 && regs[reg2] < 0 && regs[reg2] < (MIN_INT-1) / regs[reg1]) {
         overflow(1);
     }
     pushInternal(regs[reg1] * regs[reg2]);
@@ -170,8 +174,9 @@ void mul(int reg1, int reg2) {
 /*Divisione intera P1 / P2. Il risultato viene inserito nello stack.
 Terminazione con errore in caso di divisione per zero*/
 void divi(int reg1, int reg2) {
-    if(regs[reg2]==0) {
+    if(regs[reg2] == 0) {
         printf("Impossibile dividere per 0\n");
+        halt();
         exit(1);
     } else {
         pushInternal(regs[reg1] / regs[reg2]);
@@ -179,6 +184,7 @@ void divi(int reg1, int reg2) {
     }
 }
 
+/*Termina libera la memoria allocata prima della terminazione del programma*/
 void halt() {
     free(s);
     free(arr);
