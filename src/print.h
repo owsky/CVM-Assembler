@@ -1,4 +1,5 @@
-/*Nicolò Bertocco 873896 - Beatrice Messano NUMEROMATRICOLA*/
+/*Nicolò Bertocco 873896 - Beatrice Messano 876673*/
 #include "interfaces.h"
 
-void stampa(char *str, table t);
+void stam(char *str, table t);
+table mat(table t, int b);
