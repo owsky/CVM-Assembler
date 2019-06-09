@@ -1,4 +1,5 @@
-/*Nicolò Bertocco 873896 - Beatrice Messano NUMEROMATRICOLA*/
+/*P1G114*/
+/*Nicolò Bertocco 873896 - Beatrice Messano 876673*/
 void display(int reg);
 void print_stack(int num);
 void push(int reg);
