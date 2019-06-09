@@ -4,6 +4,7 @@
 #include <string.h>
 #include <assert.h>
 #include "read.h"
+#include "print.h"
 
 /*Controlla se la stringa fornita contiene un intero*/
 int checkNumber(char *s) {

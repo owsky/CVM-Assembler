@@ -5,8 +5,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-
-table mat(table t, int b){
+table match(table t, int b){
     while(t){
         if(b == t-> cod){
             return t;
@@ -16,13 +15,13 @@ table mat(table t, int b){
     return NULL;
 }
 
-void stam(char *str, table t) {
+void stampa(char *str, table t) {
     int i = 0,  len = 0, *arr = load(&(*str), &len);
     table c;
 
     if(arr != NULL){
         while(i< len){
-            if((c = mat(t, arr[i])) != NULL){
+            if((c = match(t, arr[i])) != NULL){
 
                 printf("[%d] %s ", i , c-> name);
                 i++;

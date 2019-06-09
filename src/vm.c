@@ -16,6 +16,7 @@ int main(int argc, char **argv) {
     loadTable(&t);
     assert(t);
 
+    /*Gestione input CLI*/
     switch(argc) {
         case 1:
             printf("Nessun comando inserito\n");
@@ -32,7 +33,7 @@ int main(int argc, char **argv) {
             if(!strcmp(command, "esegui")) {
                 esegui(argv[2]);
             } else if(!strcmp(command, "stampa")) {
-                stam(argv[2], t);
+                stampa(argv[2], t);
             } else {
                 printf("Comando non supportato\n");
             }
