@@ -7,6 +7,8 @@
 #include <string.h>
 #include <stdlib.h>
 
+/* la funzione mi ritorna una tabella data dell'unione della tabella delle funzioni
+e un valore intero corrispondente*/
 table match(table t, int b){
     while(t){
         if(b == t-> cod){
@@ -17,6 +19,8 @@ table match(table t, int b){
     return NULL;
 }
 
+/*Data una stringa contenente il nome del file e una tabella , la funzione mi stampa la posizione , il nome
+dell'istruzione che sta effettuando e gli eventuali parametri*/
 void stampa(char *str, table t) {
     int i = 0,  len = 0, *arr = load(&(*str), &len);
     table c;
@@ -25,7 +29,9 @@ void stampa(char *str, table t) {
         while(i< len){
             if((c = match(t, arr[i])) != NULL){
 
-                printf("[%d] %s ", i , c-> name);
+                printf("[");
+                padding(len, i);
+                printf("%d] %s ", i , c-> name);
                 i++;
                 if(c->par >0  ){
                     i++;
