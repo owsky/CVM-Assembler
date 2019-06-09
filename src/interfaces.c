@@ -1,5 +1,6 @@
 /*P1G114*/
 /*Nicolò Bertocco 873896 - Beatrice Messano 876673*/
+/*Codice scritto da Nicolò Bertocco 873896*/
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>

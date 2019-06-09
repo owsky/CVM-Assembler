@@ -1,5 +1,6 @@
 /*P1G114*/
 /*Nicolò Bertocco 873896 - Beatrice Messano 876673*/
+/*Codice scritto da Nicolò Bertocco 873896*/
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -21,18 +22,6 @@ int checkNumber(char *s) {
     return 0;
 }
 
-/*Gestione padding degli indici per la stampa*/
-
-void padding(int size, int pos) {
-    do {
-        size /= 10;
-        pos /= 10;
-    }while(size > 0 && pos > 0);
-    while(size > 0) {
-        size /= 10;
-        printf(" ");
-    }
-}
 /*Ritorna il numero di righe del file, escluse quelle prive di istruzioni
 o commenti*/
 int getSize(FILE *input) {

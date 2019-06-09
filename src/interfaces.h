@@ -4,8 +4,8 @@
 #define interfaces
 #include <stdlib.h>
 
-#define dimStack 16000
 /*Definizione stack*/
+#define dimStack 16000
 typedef struct node {
     int arr[dimStack];
     unsigned int sp;

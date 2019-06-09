@@ -1,5 +1,6 @@
 /*P1G114*/
 /*Nicolò Bertocco 873896 - Beatrice Messano 876673*/
+/*Codice scritto da Beatrice Messano 876673*/
 #include "interfaces.h"
 #include "read.h"
 #include "print.h"
@@ -19,6 +20,18 @@ table match(table t, int b){
     return NULL;
 }
 
+/*Gestione padding degli indici per la stampa*/
+void padding(int size, int pos) {
+    do {
+        size /= 10;
+        pos /= 10;
+    }while(size > 0 && pos > 0);
+    while(size > 0) {
+        size /= 10;
+        printf(" ");
+    }
+}
+
 /*Data una stringa contenente il nome del file e una tabella , la funzione mi stampa la posizione , il nome
 dell'istruzione che sta effettuando e gli eventuali parametri*/
 void stampa(char *str, table t) {
@@ -32,7 +45,6 @@ void stampa(char *str, table t) {
                 printf("[");
                 padding(len, i);
                 printf("%d] %s ", i , c-> name);
-                i++;
                 if(c->par >0  ){
                     i++;
                     if(!strcmp(c-> p1, "reg")){
@@ -51,9 +63,7 @@ void stampa(char *str, table t) {
                         }
                     }
                     printf("\n" );
-                }
-
-                else {
+                } else {
                     printf("\n");
                 }
             }

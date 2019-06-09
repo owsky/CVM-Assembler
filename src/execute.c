@@ -1,5 +1,6 @@
 /*P1G114*/
 /*Nicolò Bertocco 873896 - Beatrice Messano 876673*/
+/*Codice scritto da Nicolò Bertocco 873896*/
 #include <stdlib.h>
 #include <stdio.h>
 #include <assert.h>
@@ -159,13 +160,11 @@ void sub(int reg1, int reg2) {
 
 /*Moltiplicazione intera P1 * P2. Il risultato viene inserito nello stack*/
 void mul(int reg1, int reg2) {
-    if(regs[reg1] > 0 && regs[reg2] > 0 && regs[reg1] > MAX_INT / regs[reg2]) {
+    if((regs[reg1] > 0 && regs[reg2] > 0 && regs[reg1] > MAX_INT / regs[reg2]) ||
+    (regs[reg1] < 0 && regs[reg2] < 0 && regs[reg1] < MAX_INT / regs[reg2])) {
         overflow(0);
-    } else if(regs[reg1] < 0 && regs[reg2] < 0 && regs[reg1] < MAX_INT / regs[reg2]) {
-        overflow(0);
-    } else if(regs[reg1] < 0 && regs[reg2] > 0 && regs[reg1] < (MIN_INT-1) / regs[reg2]) {
-        overflow(1);
-    } else if(regs[reg1] > 0 && regs[reg2] < 0 && regs[reg2] < (MIN_INT-1) / regs[reg1]) {
+    } else if((regs[reg1] < 0 && regs[reg2] > 0 && regs[reg1] < (MIN_INT-1) / regs[reg2]) ||
+    (regs[reg1] > 0 && regs[reg2] < 0 && regs[reg2] < (MIN_INT-1) / regs[reg1])) {
         overflow(1);
     }
     pushInternal(regs[reg1] * regs[reg2]);
@@ -185,7 +184,7 @@ void divi(int reg1, int reg2) {
     }
 }
 
-/*Termina libera la memoria allocata prima della terminazione del programma*/
+/*Libera la memoria allocata prima della terminazione del programma*/
 void halt() {
     free(s);
     free(arr);

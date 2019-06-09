@@ -1,10 +1,11 @@
 /*P1G114*/
 /*Nicolò Bertocco 873896 - Beatrice Messano 876673*/
+/*Codice scritto da Nicolò Bertocco 873896*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
-#include <ctype.h> 
+#include <ctype.h>
 #include "interfaces.h"
 #include "execute.h"
 #include "print.h"
@@ -12,6 +13,7 @@
 int main(int argc, char **argv) {
     int i;
     char command[10];
+
     /*Creazione della tabella delle funzioni*/
     table t = NULL;
     loadTable(&t);
@@ -26,8 +28,9 @@ int main(int argc, char **argv) {
             printf("Nessun file selezionato\n");
             break;
         case 3:
-            /*Gestione case dei comandi*/
+            /*Parse dei comandi*/
             strcpy(command, argv[1]);
+            /*case insensitive*/
             for(i = 0; command[i]; i++){
                 command[i] = tolower(command[i]);
             }
@@ -43,7 +46,6 @@ int main(int argc, char **argv) {
             printf("Errore\n");
             break;
     }
-
     destroy(t);
     return 0;
 }

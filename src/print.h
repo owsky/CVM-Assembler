@@ -4,3 +4,4 @@
 
 void stampa(char *str, table t);
 table match(table t, int b);
+void padding(int size, int pos);
