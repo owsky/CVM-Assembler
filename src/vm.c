@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
-#include <ctype.h> /*dichiara diverse funzioni utili per testare e mappare caratteri.*/
+#include <ctype.h> 
 #include "interfaces.h"
 #include "execute.h"
 #include "print.h"
