@@ -1,6 +1,3 @@
-/*P1G114*/
-/*Nicolò Bertocco 873896 - Beatrice Messano 876673*/
-/*Codice scritto da Nicolò Bertocco 873896*/
 #include <stdlib.h>
 #include <stdio.h>
 #include <assert.h>
@@ -11,22 +8,16 @@
 #define MAX_INT  2147483647
 #define MIN_INT -2147483647
 
-/*Array dei registri interni*/
 int regs[32] = {0};
-/*Instruction pointer*/
 unsigned int ip = 0;
-/*Stack*/
 stack s = NULL;
-/*Array delle istruzioni*/
 int *arr;
 
-/*Stampa su console il valore del registro indicato*/
 void display(int reg) {
     printf("%d\n", regs[reg]);
     ip+=2;
 }
 
-/*Stampa su console il numero indicato di posizioni dello stack*/
 void print_stack(int num) {
     int dim = s->sp-1;
     while(dim >= 0) {
@@ -40,10 +31,8 @@ void print_stack(int num) {
     ip+=2;
 }
 
-/*Inserisce il contenuto del registro indicato nello stack (in posizione SP)
-ed incrementa SP*/
 void push(int reg) {
-    if(s->sp >= dimStack) {
+    if(s->sp >= stackSize) {
         overflow(2);
     }
     s->arr[s->sp] = regs[reg];
@@ -51,17 +40,14 @@ void push(int reg) {
     ip += 2;
 }
 
-/*Push con integer anziché registri*/
 void pushInternal(int num) {
-    if(s->sp >= dimStack) {
+    if(s->sp >= stackSize) {
         overflow(2);
     }
     s->arr[s->sp] = num;
     s->sp++;
 }
 
-/*Decrementa SP e copia il valore in posizione SP (dopo il decremento)
-nel registro indicato*/
 void pop(int reg) {
     if(s->sp <= 0) {
         overflow(3);
@@ -71,7 +57,6 @@ void pop(int reg) {
     ip += 2;
 }
 
-/*Pop con integer anziché registri*/
 int popInternal() {
     if(s->sp <= 0) {
         overflow(3);
@@ -80,31 +65,24 @@ int popInternal() {
     return s->arr[s->sp];
 }
 
-/*Copia il valore P2 nel registro indicato*/
 void mov(int reg, int num) {
     regs[reg] = num;
     ip+=3;
 }
 
-/*Chiamata a subroutine. PUSH IP (posizione successiva a CALL)
-e JMP alla posizione indicata*/
 void call(int pos) {
     pushInternal(ip+2);
     ip = pos;
 }
 
-/*Ritorno da chiamata a subroutine, POP in IP*/
 void ret() {
     ip = popInternal();
 }
 
-/*Sostituisce il valore di IP con il valore indicato*/
 void jmp(int pos) {
     ip = pos;
 }
 
-/*Sostituisce il valore di IP con il valore indicato se l’ultimo elemento
-inserito nello stack `e uguale a zero e lo rimuove, decrementando SP*/
 void jz(int pos) {
     int num = popInternal();
     if(num == 0) {
@@ -114,8 +92,6 @@ void jz(int pos) {
     }
 }
 
-/*Sostituisce il valore di IP con il valore indicato se l’ultimo elemento
-inserito nello stack `e maggiore di zero e lo rimuove, decrementando SP*/
 void jpos(int pos) {
     int num = popInternal();
     if(num > 0) {
@@ -125,8 +101,6 @@ void jpos(int pos) {
     }
 }
 
-/*Sostituisce il valore di IP con il valore indicato se l’ultimo elemento
-inserito nello stack `e minore di zero e lo rimuove, decrementando SP*/
 void jneg(int pos) {
     int num = popInternal();
     if(num < 0) {
@@ -136,7 +110,6 @@ void jneg(int pos) {
     }
 }
 
-/*Addizione intera P1 + P2. Il risultato viene inserito nello stack*/
 void add(int reg1, int reg2) {
     if(regs[reg1] > 0 && regs[reg2] > MAX_INT - regs[reg1]) {
         overflow(0);
@@ -147,7 +120,6 @@ void add(int reg1, int reg2) {
     ip+=3;
 }
 
-/*Sottrazione intera P1 - P2. Il risultato viene inserito nello stack*/
 void sub(int reg1, int reg2) {
     if(regs[reg1] > 0 && regs[reg2] < 0 && regs[reg2] < MAX_INT - regs[reg1]) {
         overflow(0);
@@ -158,7 +130,6 @@ void sub(int reg1, int reg2) {
     ip+=3;
 }
 
-/*Moltiplicazione intera P1 * P2. Il risultato viene inserito nello stack*/
 void mul(int reg1, int reg2) {
     if((regs[reg1] > 0 && regs[reg2] > 0 && regs[reg1] > MAX_INT / regs[reg2]) ||
     (regs[reg1] < 0 && regs[reg2] < 0 && regs[reg1] < MAX_INT / regs[reg2])) {
@@ -171,11 +142,9 @@ void mul(int reg1, int reg2) {
     ip+=3;
 }
 
-/*Divisione intera P1 / P2. Il risultato viene inserito nello stack.
-Terminazione con errore in caso di divisione per zero*/
 void divi(int reg1, int reg2) {
     if(regs[reg2] == 0) {
-        printf("Impossibile dividere per 0\n");
+        printf("Error: can't divide by 0\n");
         halt();
         exit(1);
     } else {
@@ -184,23 +153,20 @@ void divi(int reg1, int reg2) {
     }
 }
 
-/*Libera la memoria allocata prima della terminazione del programma*/
 void halt() {
     free(s);
     free(arr);
 }
 
-/*Parse ed esecuzione delle istruzioni*/
-void esegui(char *str) {
+/*Instruction parse and execution*/
+void execute(char *str) {
     int len = 0;
-    /*Caricamento delle istruzioni da file in un array*/
+    /*Loads instructions and parameters from file*/
     arr = load(&(*str), &len);
     assert(arr);
-    /*Istanziazione della stack*/
     s = (stack)malloc(sizeof(struct node));
     assert(s);
 
-    /*Parse delle istruzioni tramite instruction pointer*/
     do {
         switch(arr[ip]) {
             case 0:
@@ -252,7 +218,7 @@ void esegui(char *str) {
                 divi(arr[ip+1], arr[ip+2]);
                 break;
             default:
-                printf("Istruzione non supportata\n");
+                printf("Unsupported function\n");
                 break;
         }
     }while((int)ip < len);

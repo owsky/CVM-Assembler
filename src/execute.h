@@ -1,5 +1,3 @@
-/*P1G114*/
-/*Nicolò Bertocco 873896 - Beatrice Messano 876673*/
 void display(int reg);
 void print_stack(int num);
 void push(int reg);
@@ -17,5 +15,5 @@ void add(int reg1, int reg2);
 void sub(int reg1, int reg2);
 void mul(int reg1, int reg2);
 void divi(int reg1, int reg2);
-void esegui(char *s);
+void execute(char *s);
 void halt();

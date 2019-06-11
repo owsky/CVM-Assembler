@@ -1,6 +1,3 @@
-/*P1G114*/
-/*Nicolò Bertocco 873896 - Beatrice Messano 876673*/
-/*Codice scritto da Beatrice Messano 876673*/
 #include "interfaces.h"
 #include "read.h"
 #include "print.h"
@@ -8,8 +5,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-/* la funzione mi ritorna una tabella data dell'unione della tabella delle funzioni
-e un valore intero corrispondente*/
+/*Finds correspondent node in the table*/
 table match(table t, int b){
     while(t){
         if(b == t-> cod){
@@ -20,7 +16,7 @@ table match(table t, int b){
     return NULL;
 }
 
-/*Gestione padding degli indici per la stampa*/
+/*Adds padding for pretty printing*/
 void padding(int size, int pos) {
     do {
         size /= 10;
@@ -32,9 +28,8 @@ void padding(int size, int pos) {
     }
 }
 
-/*Data una stringa contenente il nome del file e una tabella , la funzione mi stampa la posizione , il nome
-dell'istruzione che sta effettuando e gli eventuali parametri*/
-void stampa(char *str, table t) {
+/*Prints instructions from the input file*/
+void print(char *str, table t) {
     int i = 0,  len = 0, *arr = load(&(*str), &len);
     table c;
 

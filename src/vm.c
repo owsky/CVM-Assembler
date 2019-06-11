@@ -1,6 +1,3 @@
-/*P1G114*/
-/*Nicolò Bertocco 873896 - Beatrice Messano 876673*/
-/*Codice scritto da Nicolò Bertocco 873896*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -14,36 +11,34 @@ int main(int argc, char **argv) {
     int i;
     char command[10];
 
-    /*Creazione della tabella delle funzioni*/
     table t = NULL;
     loadTable(&t);
     assert(t);
 
-    /*Gestione input CLI*/
     switch(argc) {
         case 1:
-            printf("Nessun comando inserito\n");
+            printf("Input a command\n");
             break;
         case 2:
-            printf("Nessun file selezionato\n");
+            printf("Select a file\n");
             break;
         case 3:
-            /*Parse dei comandi*/
             strcpy(command, argv[1]);
-            /*case insensitive*/
+
             for(i = 0; command[i]; i++){
                 command[i] = tolower(command[i]);
             }
-            if(!strcmp(command, "esegui")) {
-                esegui(argv[2]);
-            } else if(!strcmp(command, "stampa")) {
-                stampa(argv[2], t);
+
+            if(!strcmp(command, "execute")) {
+                execute(argv[2]);
+            } else if(!strcmp(command, "print")) {
+                print(argv[2], t);
             } else {
-                printf("Comando non supportato\n");
+                printf("Unsupported command\n");
             }
             break;
         default:
-            printf("Errore\n");
+            printf("Error: too many parameters\n");
             break;
     }
     destroy(t);

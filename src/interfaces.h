@@ -1,17 +1,13 @@
-/*P1G114*/
-/*Nicolò Bertocco 873896 - Beatrice Messano 876673*/
 #ifndef interfaces
 #define interfaces
 #include <stdlib.h>
 
-/*Definizione stack*/
-#define dimStack 16000
+#define stackSize 16000
 typedef struct node {
-    int arr[dimStack];
+    int arr[stackSize];
     unsigned int sp;
 } *stack;
 
-/*Definizione tabella funzioni*/
 typedef struct tab {
     int cod;
     int par;

@@ -1,6 +1,3 @@
-/*P1G114*/
-/*Nicolò Bertocco 873896 - Beatrice Messano 876673*/
-/*Codice scritto da Nicolò Bertocco 873896*/
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -8,7 +5,6 @@
 #include "interfaces.h"
 #include "execute.h"
 
-/*Popola la tabella delle funzioni*/
 void addFunction(table *t, int cod, char *p1, char *p2, char *name) {
     if(!*t) {
         *t = (table)malloc(sizeof(struct tab));
@@ -16,7 +12,6 @@ void addFunction(table *t, int cod, char *p1, char *p2, char *name) {
         (*t)->cod = cod;
         (*t)->par = 0;
 
-        /*Store del tipo dei parametri*/
         if(p1) {
             strcpy((*t)->p1, p1);
             (*t)->par++;
@@ -33,7 +28,6 @@ void addFunction(table *t, int cod, char *p1, char *p2, char *name) {
     }
 }
 
-/*Chiama le funzioni per popolare la tabella*/
 void loadTable(table *t) {
     addFunction(t, 0, NULL, NULL, "HALT");
     addFunction(t, 1, "reg", NULL, "DISPLAY");
@@ -53,7 +47,6 @@ void loadTable(table *t) {
     addFunction(t, 33, "reg", "reg", "DIV");
 }
 
-/*Distruzione ricorsiva della tabella*/
 void destroy(table t) {
     if(t->next) {
         destroy(t->next);
@@ -61,7 +54,6 @@ void destroy(table t) {
     free(t);
 }
 
-/*Gestione overflow*/
 void overflow(int t) {
     switch(t) {
         case 0:

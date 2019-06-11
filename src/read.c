@@ -1,6 +1,3 @@
-/*P1G114*/
-/*Nicolò Bertocco 873896 - Beatrice Messano 876673*/
-/*Codice scritto da Nicolò Bertocco 873896*/
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -8,7 +5,7 @@
 #include "read.h"
 #include "print.h"
 
-/*Controlla se la stringa fornita contiene un intero*/
+/*Checks if the given string contains a valid instruction or parameter*/
 int checkNumber(char *s) {
     int i = 0;
     while(s[i] != '\0') {
@@ -22,8 +19,7 @@ int checkNumber(char *s) {
     return 0;
 }
 
-/*Ritorna il numero di righe del file, escluse quelle prive di istruzioni
-o commenti*/
+/*Looks for the first valid number indicating the file size*/
 int getSize(FILE *input) {
     char *num, *linea, delim[] = " ;";
     int res;
@@ -42,21 +38,17 @@ int getSize(FILE *input) {
     return -1;
 }
 
-/*Data una stringa contenente il nome del file effettua l'apertura carica le
-istruzioni in un array e ne ritorna il puntatore*/
+/*Opens the file and loads the content into an array*/
 int *load(char *str, int *len) {
     int c, i = 0, *arr;
     char *num, *line, delim[] = " ;";
     size_t dim = 0;
-
-    /*Apertura file*/
     FILE *stream = fopen(str, "r");
     if(!stream) {
-        printf("File non trovato\n");
+        printf("File not found\n");
         exit(1);
     }
 
-    /*Istanziazione dinamica dell'array*/
     *len = getSize(stream);
     arr = (int*)malloc(sizeof(int) * (*len));
     assert(arr);
