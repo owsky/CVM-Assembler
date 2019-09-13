@@ -30,7 +30,7 @@ void padding(int size, int pos) {
 
 /*Prints instructions from the input file*/
 void print(char *str, table t) {
-    int i = 0,  len = 0, *arr = load(&(*str), &len);
+    int i = 0,  len = 0, *arr = load(str, &len);
     table c;
 
     if(arr != NULL){

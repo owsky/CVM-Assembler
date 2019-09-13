@@ -162,7 +162,7 @@ void halt() {
 void execute(char *str) {
     int len = 0;
     /*Loads instructions and parameters from file*/
-    arr = load(&(*str), &len);
+    arr = load(str, &len);
     assert(arr);
     s = (stack)malloc(sizeof(struct node));
     assert(s);
