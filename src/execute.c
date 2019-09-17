@@ -6,7 +6,7 @@
 #include "execute.h"
 
 #define MAX_INT  2147483647
-#define MIN_INT -2147483647
+#define MIN_INT -2147483648
 
 int regs[32] = {0};
 unsigned int ip = 0;
@@ -111,32 +111,33 @@ void jneg(int pos) {
 }
 
 void add(int reg1, int reg2) {
-    if(regs[reg1] > 0 && regs[reg2] > MAX_INT - regs[reg1]) {
-        overflow(0);
-    } else if(regs[reg1] < 0 && regs[reg2] < (MIN_INT-1) - regs[reg1]) {
-        overflow(1);
+    long check = (long) reg1 + (long) reg2;
+    if(check > MAX_INT) {
+        overflow();
+    } else if(check < MIN_INT) {
+        underflow();
     }
     pushInternal(regs[reg1] + regs[reg2]);
     ip+=3;
 }
 
 void sub(int reg1, int reg2) {
-    if(regs[reg1] > 0 && regs[reg2] < 0 && regs[reg2] < MAX_INT - regs[reg1]) {
-        overflow(0);
-    } else if(regs[reg1] < 0 && regs[reg2] > 0 && regs[reg2] > (MIN_INT-1) - regs[reg1]) {
-        overflow(1);
+    long check = (long) reg1 - (long) reg2;
+    if(check > MAX_INT) {
+        overflow();
+    } else if(check < MIN_INT) {
+        underflow();
     }
     pushInternal(regs[reg1] - regs[reg2]);
     ip+=3;
 }
 
 void mul(int reg1, int reg2) {
-    if((regs[reg1] > 0 && regs[reg2] > 0 && regs[reg1] > MAX_INT / regs[reg2]) ||
-    (regs[reg1] < 0 && regs[reg2] < 0 && regs[reg1] < MAX_INT / regs[reg2])) {
-        overflow(0);
-    } else if((regs[reg1] < 0 && regs[reg2] > 0 && regs[reg1] < (MIN_INT-1) / regs[reg2]) ||
-    (regs[reg1] > 0 && regs[reg2] < 0 && regs[reg2] < (MIN_INT-1) / regs[reg1])) {
-        overflow(1);
+    long check = (long) reg1 * (long) reg2;
+    if(check > MAX_INT) {
+        overflow();
+    } else if(check < MIN_INT) {
+        underflow();
     }
     pushInternal(regs[reg1] * regs[reg2]);
     ip+=3;

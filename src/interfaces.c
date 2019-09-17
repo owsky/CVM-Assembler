@@ -54,23 +54,26 @@ void destroy(table t) {
     free(t);
 }
 
-void overflow(int t) {
-    switch(t) {
-        case 0:
-            printf("Overflow\n");
-            break;
-        case 1:
-            printf("Underflow\n");
-            break;
-        case 2:
-            printf("Stack Overflow\n");
-            break;
-        case 3:
-            printf("Stack Underflow\n");
-            break;
-        default:
-            break;
-    }
+void overflow() {
+    printf("Error: arithmetic overflow");
     halt();
     exit(1);
+}
+
+void underflow() {
+    printf("Error: arithmetic underflow");
+    halt();
+    exit(1);
+}
+
+void stackOverflow() {
+    printf("Error: stack overflow");
+    halt();
+    exit(1);
+}
+
+void stackUnderflow() {
+    printf("Error: arithmetic overflow");
+        halt();
+        exit(1);
 }

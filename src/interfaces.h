@@ -19,5 +19,11 @@ typedef struct tab {
 void addFunction(table *t, int cod, char *p1, char *p2, char *name);
 void loadTable(table *t);
 void destroy(table t);
-void overflow(int t);
+void overflow();
+
+void underflow();
+
+void stackOverflow();
+
+void stackUnderflow();
 #endif
