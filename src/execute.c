@@ -26,14 +26,14 @@ void print_stack(int num) {
         dim--;
     }
     if(num > 0) {
-        overflow(3);
+        stackUnderflow();
     }
     ip+=2;
 }
 
 void push(int reg) {
     if(s->sp >= stackSize) {
-        overflow(2);
+        stackOverflow();
     }
     s->arr[s->sp] = regs[reg];
     s->sp++;
@@ -42,7 +42,7 @@ void push(int reg) {
 
 void pushInternal(int num) {
     if(s->sp >= stackSize) {
-        overflow(2);
+        stackOverflow();
     }
     s->arr[s->sp] = num;
     s->sp++;
@@ -50,7 +50,7 @@ void pushInternal(int num) {
 
 void pop(int reg) {
     if(s->sp <= 0) {
-        overflow(3);
+        stackUnderflow();
     }
     s->sp--;
     regs[reg] = s->arr[s->sp];
@@ -59,7 +59,7 @@ void pop(int reg) {
 
 int popInternal() {
     if(s->sp <= 0) {
-        overflow(3);
+        stackUnderflow();
     }
     s->sp--;
     return s->arr[s->sp];
