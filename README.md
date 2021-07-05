@@ -1,5 +1,8 @@
 # CVM-Assembler
 ![Kiku](https://www.unive.it/pag/fileadmin/user_upload/extra/pid/img/loghi/logo_CF_1.png)  
+  
+I'm currently rewriting this project with Rust, as a means to learn the language and provide an overall better implementation.  
+  
 This project is a simplified virtual machine that prints or executes assembly programs by crossreferencing its table of functions with a .cvm file. Each one is addressed through an integer code and may have one or two parameters.
 The supported commands are <italic>print</italic> and <italic>execute</italic> and both require a valid .cvm file. It's assumed that the input program is correct (minus the overflow, which was required to test for) and that it is written with the following specifics:
 <ul>
