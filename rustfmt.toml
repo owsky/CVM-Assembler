@@ -1,0 +1,5 @@
+indent_style = "Block"
+reorder_imports = true
+array_width = 87
+attr_fn_like_width = 87
+use_small_heuristics = false
