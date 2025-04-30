@@ -1,7 +1,7 @@
 mod assembler;
 mod read_input;
 
-use assembler::Assembler;
+use crate::assembler::Assembler;
 use clap::Parser;
 use std::path::Path;
 
