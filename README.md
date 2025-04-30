@@ -1,20 +1,28 @@
-# CVM-Assembler
-  
-This project is a simplified virtual machine that prints or executes assembly programs by crossreferencing its table of functions with a .cvm file. Each one is addressed through an integer code and may have one or two parameters.
-The supported commands are <italic>print</italic> and <italic>execute</italic> and both require a valid .cvm file. It's assumed that the input program is correct (minus the overflow, which was required to test for) and that it is written with the following specifics:
-<ul>
-  <li>The very first number represents the total number of lines minus the ones that contain only comments</li>
-  <li>Comments are delimited by the semilicon character and comprehend the whole line on its right side</li>
-  <li>Spaces and tabs are ignored so their use is not restricted</li>
-</ul>
+# Rust Assembler
 
-Command and file name are to be typed as parameters at execution, as per instruction from the course's professor.
+Simple assembly interpreter implemented as a Rust Command Line Interface program.  
+The source code to be executed must be written according to the following grammar:
+```
+E :=     \\ expression
+  | n    \\ instruction code, register number or integer value
+  | ;    \\ comment
+  | n ;  \\ function code with comment
+```
+The parser is very simple and expects one expression per line, also the programs are assumed to be syntactically correct, for the most part.
 
-<h3>Table of Functions</h3>
+## Usage
+```
+.\rust_assembler -s PATH_TO_PROGRAM
+```
+
+## Supported instructions
+
+The following table lists all the supported instructions, alongside their associated functions' signatures and their machine codes to be used in the source files.
+
 <table>
   <tr>
-    <th>Function Name</th>
-    <th>Machine code number</th>
+    <th>Instruction Name</th>
+    <th>Instruction code</th>
     <th>First Parameter</th>
     <th>Second Parameter</th>
     <th>Description</th>
