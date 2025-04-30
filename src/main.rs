@@ -1,33 +1,34 @@
+mod assembler;
 mod read_input;
-mod vm;
 
-use crate::vm::Assembler;
-use regex::Regex;
-use std::env;
-use std::io::BufRead;
+use assembler::Assembler;
+use clap::Parser;
+use std::path::Path;
+
+#[derive(Parser, Debug)]
+#[command(name = "Rust Assembler")]
+#[command(author = "Nicolò Bertocco <nick.bertocco@gmail.com>")]
+#[command(version = "1.0")]
+#[command(about = "Simple assembler implemented in Rust", long_about = None)]
+struct Cli {
+    /// path to source file
+    #[arg(short, long)]
+    source_path: String,
+}
 
 fn main() {
-    // checks if the user provided the correct amount of cli arguments
-    let args: Vec<String> = env::args().collect();
-    if args.len() == 2 {
-        let file = read_input::read_program_from_file(&args[1]);
-        let re = Regex::new(";.*").unwrap();
-        let mut program: Vec<i32> = Vec::new();
+    // parse the cli arguments
+    let args = Cli::parse();
 
-        // reads provided program line by line and strips it of unneeded lines and characters
-        for (_index, line) in file.lines().enumerate() {
-            let mut line = line.unwrap();
-            let filtered_line = re.replace_all(&mut line, "");
-            let trimmed_filtered_line = filtered_line.trim();
-            if trimmed_filtered_line.len() > 0 {
-                program.push(trimmed_filtered_line.parse::<i32>().unwrap());
-            }
-        }
+    // create a new Path object
+    let source_path = Path::new(&args.source_path);
 
-        // removes program length line
-        let program_sliced = &program[1..];
+    // try to parse an assembly program from the input file
+    let program = read_input::read_program_from_file(&source_path);
 
-        let mut assembler = Assembler::new();
-        assembler.execute(program_sliced);
-    }
+    // create an instance of the assembler
+    let mut assembler = Assembler::new();
+
+    // execute the program
+    assembler.execute(&program);
 }
